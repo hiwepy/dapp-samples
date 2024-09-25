@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -40,24 +39,19 @@ public class ChainDailySignLog implements Serializable {
     private String userClientId;
 
     /**
-     * token
+     * 钱包地址
      */
-    private String tokenId;
+    private String address;
 
     /**
-     * 链 token
+     * 交易hash地址
      */
-    private String chainTokenId;
+    private String hashAddress;
 
     /**
      * 签到时间
      */
-    private Lo signTime;
-
-    /**
-     * 最后一次签到时间
-     */
-    private Long lastSignInAt;
+    private Long signInAt;
 
     /**
      * 创建时间
@@ -68,32 +62,20 @@ public class ChainDailySignLog implements Serializable {
      * 更新时间
      */
     private Long updatedAt;
-    @Transient
-    private Integer oldVersion;
 
     private static final long serialVersionUID = 1L;
 
-    public static ChainDailySignLog buildActivityDailySignUserSave(long userId, int durationDays) {
+    public static ChainDailySignLog buildChainDailySignLog(Long userId, Long userClientId, String address, String hashAddress) {
         long now = Instant.now().toEpochMilli();
         return ChainDailySignLog.builder()
-                .version(1)
                 .userId(userId)
-                .durationDays(durationDays)
-                .lastSignInAt(now)
+                .userClientId(String.valueOf(userClientId))
+                .address(address)
+                .hashAddress(hashAddress)
+                .signInAt(now)
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
     }
 
-    public static ChainDailySignLog buildActivityDailySignUserUpdate(ChainDailySignLog already, int durationDays) {
-        long now = Instant.now().toEpochMilli();
-        return ChainDailySignLog.builder()
-                .id(already.getId())
-                .oldVersion((already.getVersion()))
-                .version(already.getVersion())
-                .durationDays(durationDays)
-                .lastSignInAt(now)
-                .updatedAt(now)
-                .build();
-    }
 }

@@ -41,6 +41,7 @@
         <module>dapp-base-api</module>
         <module>dapp-ton-connect</module>
         <module>dapp-ton-contract</module>
+        <module>dapp-ton-transaction</module>
         <module>dapp-ton-server</module>
     </modules>
 <!--

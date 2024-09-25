@@ -145,10 +145,15 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                    <mainClass>com.github.hiwepy.dapp.DAppTonApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

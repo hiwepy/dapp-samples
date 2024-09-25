@@ -31,20 +31,14 @@ public class ConfigChainDailySign implements Serializable {
     /**
      * 天数
      */
-    @TableField("days")
-    private Integer days;
-
-    /**
-     * 奖励类型
-     */
-    @TableField("reward_type")
-    private Integer rewardType;
+    @TableField("day")
+    private Integer day;
 
     /**
      * 奖励
      */
-    @TableField("reward_amount")
-    private BigDecimal rewardAmount;
+    @TableField("reward")
+    private BigDecimal reward;
 
     /**
      * 创建时间

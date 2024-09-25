@@ -3,7 +3,7 @@ package com.github.hiwepy.dapp.service.impl;
 import com.github.hiwepy.dapp.entity.User;
 import com.github.hiwepy.dapp.exception.BizExceptionCode;
 import com.github.hiwepy.dapp.param.TonChainSignReq;
-import com.github.hiwepy.dapp.param.TonProofCheckReq;
+import com.github.hiwepy.dapp.vo.TonProofCheckReq;
 import com.github.hiwepy.dapp.service.TonChainService;
 import com.github.hiwepy.dapp.service.UserService;
 import com.iwebpp.crypto.TweetNaclFast;

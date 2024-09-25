@@ -1,7 +1,7 @@
 package com.github.hiwepy.dapp.service;
 
 import com.github.hiwepy.dapp.param.TonChainSignReq;
-import com.github.hiwepy.dapp.param.TonProofCheckReq;
+import com.github.hiwepy.dapp.vo.TonProofCheckReq;
 
 public interface TonChainService {
 
