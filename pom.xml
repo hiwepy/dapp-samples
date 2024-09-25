@@ -21,8 +21,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <fastjson2.version>2.0.52</fastjson2.version>
+        <hitool.version>1.0.2.RELEASE</hitool.version>
 		<java.version>17</java.version>
         <jsonschema.version>4.36.0</jsonschema.version>
+        <mybatis.version>3.5.16</mybatis.version>
+        <mybatis-plus.version>3.5.8</mybatis-plus.version>
+        <mybatis-plus-generator.version>${mybatis-plus.version}</mybatis-plus-generator.version>
+        <redisson.version>3.36.0</redisson.version>
         <swagger.version>1.6.14</swagger.version>
         <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
         <swagger-butler.version>1.2.0</swagger-butler.version>
@@ -57,6 +62,21 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.github.hiwepy</groupId>
+                <artifactId>hitool-core</artifactId>
+                <version>${hitool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.hiwepy</groupId>
+                <artifactId>hitool-crypto</artifactId>
+                <version>${hitool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.hiwepy</groupId>
+                <artifactId>hitool-mail</artifactId>
+                <version>${hitool.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.testcontainers/testcontainers-bom -->
             <dependency>
                 <groupId>org.testcontainers</groupId>
@@ -114,6 +134,37 @@
                 <artifactId>jsonschema-module-swagger-2</artifactId>
                 <version>${jsonschema.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/io.swagger -->
             <dependency>
                 <groupId>io.swagger</groupId>
@@ -154,13 +205,6 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-hibernate-validations</artifactId>
                 <version>${swagger.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/io.github.swagger2markup/swagger2markup -->
-            <dependency>
-                <groupId>io.github.swagger2markup</groupId>
-                <artifactId>swagger2markup</artifactId>
-                <version>${swagger2markup.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/io.swagger.core.v3 -->

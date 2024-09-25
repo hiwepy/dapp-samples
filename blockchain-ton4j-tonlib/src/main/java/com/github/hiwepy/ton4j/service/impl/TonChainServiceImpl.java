@@ -1,9 +1,14 @@
 package com.github.hiwepy.ton4j.service.impl;
 
+import com.github.hiwepy.ton4j.entity.User;
+import com.github.hiwepy.ton4j.exception.BizExceptionCode;
+import com.github.hiwepy.ton4j.param.TonChainSignReq;
 import com.github.hiwepy.ton4j.param.TonProofCheckReq;
 import com.github.hiwepy.ton4j.service.TonChainService;
+import com.github.hiwepy.ton4j.service.UserService;
 import com.iwebpp.crypto.TweetNaclFast;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ton.java.tonconnect.Domain;
 import org.ton.java.tonconnect.TonConnect;
@@ -13,16 +18,17 @@ import org.ton.java.utils.Utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @Slf4j
 public class TonChainServiceImpl implements TonChainService {
 
-    @Override
-    public boolean signin(String address) {
+    private final UserService userService;
 
-
-        return Boolean.TRUE;
+    @Autowired
+    public TonChainServiceImpl(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -31,7 +37,7 @@ public class TonChainServiceImpl implements TonChainService {
      * @return
      */
     @Override
-    public boolean checkProof(TonProofCheckReq req) {
+    public boolean checkProof(String appId, TonProofCheckReq req) {
         /**
          * 1、从用户处检索 TonProofItemReply。
          * 2、验证接收到的域是否对应于应用程序的域。
@@ -84,5 +90,18 @@ public class TonChainServiceImpl implements TonChainService {
             return Boolean.FALSE;
         }
     }
+
+    @Override
+    public boolean sign(String appId, TonChainSignReq req) {
+        // 1、检查用户是否存在
+        User user = userService.getById(req.getUserId());
+        if (Objects.isNull(user)) {
+            log.info("TonChainServiceImpl.sign userId:{}", req.getUserId());
+            BizExceptionCode.USER_NOT_FOUND.throwException();
+        }
+
+        return false;
+    }
+
 
 }
