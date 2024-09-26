@@ -77,7 +77,7 @@ public class TonTransactionTest {
     @Test
     public void testGeTransactionsByAddressFromTon() throws Exception {
 
-        Address address = Address.of("EQDkZIvi6fkgNVxLOgw5hzquGhxhUvhvJ4B836p-NQ-iLKCv");
+        Address address = Address.of("0QAs9VlT6S776tq3unJcP5Ogsj-ELLunLXuOb1EKcOQi4-QO");
         log.info("address: " + address.toString(true));
         RawTransactions rawTransactions = tonlib.getRawTransactions(address.toString(false),null,null);
         log.info("total txs: {}", rawTransactions.getTransactions().size());
