@@ -39,10 +39,11 @@
 
     <modules>
         <module>dapp-base-api</module>
-        <module>dapp-ton-connect</module>
-        <module>dapp-ton-contract</module>
-        <module>dapp-ton-transaction</module>
-        <module>dapp-ton-server</module>
+        <module>dapp-demo-server</module>
+        <module>dapp-ton4j-connect</module>
+        <module>dapp-ton4j-contract</module>
+        <module>dapp-ton4j-transaction</module>
+        <module>dapp-web3j-contract</module>
     </modules>
 <!--
 	<repositories>
