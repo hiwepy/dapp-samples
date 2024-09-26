@@ -98,10 +98,14 @@ public class Erc20ContractUtil {
      * @return
      */
     public static List<Type> ethCall(Web3j web3j, String from, String contract, Function function) {
+        // 对合约函数进行编码
         String encodeData = FunctionEncoder.encode(function);
+        // 创建交易
         Transaction transaction = Transaction.createEthCallTransaction(from, contract, encodeData);
         try {
+            // 发送交易
             EthCall response = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).send();
+            // 解析返回值
             if (Objects.nonNull(response) && Objects.nonNull(response.getValue())) {
                 return FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
             }
@@ -125,8 +129,7 @@ public class Erc20ContractUtil {
      * @param function
      * @return
      */
-    public static BigInteger getTransactionGasLimit(Web3j web3j, String from, String contract,
-                                                    Function function) {
+    public static BigInteger getTransactionGasLimit(Web3j web3j, String from, String contract, Function function) {
         String encodeData = FunctionEncoder.encode(function);
         Transaction transaction = Transaction.createEthCallTransaction(from, contract, encodeData);
         try {
@@ -144,7 +147,6 @@ public class Erc20ContractUtil {
 
     /**
      * 获取账户的Nonce
-     *
      * @param address
      * @return
      */

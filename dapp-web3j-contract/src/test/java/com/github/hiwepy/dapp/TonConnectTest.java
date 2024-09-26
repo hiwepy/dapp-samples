@@ -1,157 +1,88 @@
 package com.github.hiwepy.dapp;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.ToNumberPolicy;
-import com.iwebpp.crypto.TweetNaclFast;
+import com.blockchain.tools.eth.codec.EthAbiCodecTool;
+import com.blockchain.tools.eth.contract.template.ERC20Contract;
+import com.blockchain.tools.eth.contract.util.EthContractUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.ton.java.address.Address;
-import org.ton.java.cell.CellBuilder;
-import org.ton.java.smartcontract.types.WalletCodes;
-import org.ton.java.tlb.types.StateInit;
-import org.ton.java.tonconnect.Domain;
-import org.ton.java.tonconnect.TonConnect;
-import org.ton.java.tonconnect.TonProof;
-import org.ton.java.tonconnect.WalletAccount;
-import org.ton.java.tonlib.Tonlib;
-import org.ton.java.tonlib.types.RawAccountState;
-import org.ton.java.utils.Utils;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
 
 import java.math.BigInteger;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.List;
 
 @Slf4j
 public class TonConnectTest {
 
-    Gson gson = new GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
+    private String senderAddress = ""; // 发送者地址
+    private String toAddress = ""; // 接收者地址
+
     /**
-     * <a href="https://docs.ton.org/develop/dapps/ton-connect/sign#how-does-it-work">how-does-it-work</a>
+     * 合约查询 以及 写入数据
+     * @throws Exception
+     */
+    @Test
+    public void testTonConnect3() throws Exception {
+        String privateKey = ""; // 私钥
+        Web3j web3j = Web3j.build(new HttpService("https://data-seed-prebsc-1-s1.binance.org:8545/")); // 链的RPC地址
+        String contractAddress = "";
+
+        EthContractUtil ethContractUtil = EthContractUtil.builder(web3j);
+
+// 查询
+        List<Type> result = ethContractUtil.select(
+                contractAddress, // 合约地址
+                EthAbiCodecTool.getInputData(
+                        "balanceOf", // 要调用的方法名称
+                        new Address(toAddress) // 方法的参数，如果有多个，可以继续传入下一个参数
+                ),  // 要调用的方法的inputData
+                new TypeReference<Uint256>() {} // 方法的返回类型，如果有多个返回值，可以继续传入下一个参数
+        );
+        /*
+        // 往合约里写入数据
+        // gasPrice，gasLimit 两个参数，如果想用默认值可以不传，或者传null
+        // 如果不传的话，两个参数都必须不传，要传就一起传， 如果设置为null的话，可以一个为null，一个有值
+        SendResultModel sendResultModel = ethContractUtil.sendRawTransaction(
+                senderAddress, // 调用者的地址
+                contractAddress, // 合约地址
+                privateKey, // senderAddress的私钥
+                new BigInteger("1200000"), // gasPrice，如果想用默认值 可以直接传null，或者不传这个参数
+                new BigInteger("800000"), // gasLimit，如果想用默认值 可以直接传null，或者不传这个参数
+                EthAbiCodecTool.getInputData(
+                        "transfer", // 要调用的方法名称
+                        new Address(toAddress), // 方法的参数，如果有多个，可以继续传入下一个参数
+                        new Uint256(new BigInteger("1000000000000000000")) // 方法的参数，如果有多个，可以继续传入下一个参数
+                ) // 要调用的方法的inputData
+        );
+
+        sendResultModel.getEthSendTransaction(); // 发送交易后的结果
+        sendResultModel.getEthGetTransactionReceipt(); // 交易成功上链后的结果*/
+    }
+
+    /**
+     * 调用ERC20合约
      */
     @Test
     public void testTonConnect() throws Exception {
+        Web3j web3j = Web3j.build(new HttpService("https://data-seed-prebsc-2-s1.binance.org:8545"));
 
-        // User has a wallet with:
-        // prvKey f182111193f30d79d517f2339a1ba7c25fdf6c52142f0f2c1d960a1f1d65e1e4
-        // pubKey 82a0b2543d06fec0aac952e9ec738be56ab1b6027fc0c1aa817ae14b4d1ed2fb
-        // addr   0:2d29bfa071c8c62fa3398b661a842e60f04cb8a915fb3e749ef7c6c41343e16c
+        String contractAddress = "";
 
-        Tonlib tonlib = Tonlib.builder()
-                .testnet(true)
-                .ignoreCache(false)
-                .build();
-
-        byte[] secretKey = Utils.hexToSignedBytes("F182111193F30D79D517F2339A1BA7C25FDF6C52142F0F2C1D960A1F1D65E1E4");
-        TweetNaclFast.Signature.KeyPair keyPair = TweetNaclFast.Signature.keyPair_fromSeed(secretKey);
-        log.info("prvKey: {}", Utils.bytesToHex(secretKey));
-        log.info("pubKey: {}", Utils.bytesToHex(keyPair.getPublicKey()));
+        ERC20Contract erc20Contract = ERC20Contract.builder(web3j, contractAddress);
 
 
-        String addressStr = "0:2d29bfa071c8c62fa3398b661a842e60f04cb8a915fb3e749ef7c6c41343e16c";
-        Address address = Address.of(addressStr);
-        RawAccountState rawAccountState = tonlib.getRawAccountState(address);
-        log.info("state {}", rawAccountState);
+// 调用合约的 totalSupply 函数
+        BigInteger total = erc20Contract.totalSupply();
 
-        // 0. User initiates sign in process at the dapp's frontend, then dapp send request to its backend to generate ton_proof payload.
-        // 1. Backend generates a TonProof entity and sends it to a frontend (without signature obviously)
+// 调用合约的 balanceOf 函数
+        BigInteger amount = erc20Contract.balanceOf("0xb4e32492E9725c3215F1662Cf28Db1862ed1EE84");
 
-        String payload = "doc-example-<BACKEND_AUTH_ID>";
-        String sig = "";
-
-        String proof = String.format("{\n" +
-                        "                \"timestamp\": 1722999580, \n" +
-                        "                \"domain\": {\n" +
-                        "                    \"lengthBytes\": 16, \n" +
-                        "                    \"value\": \"xxx.xxx.com\"\n" +
-                        "                }, \n" +
-                        "                \"signature\": \"%s\", \n" + // <---------- to be updated
-                        "                \"payload\": \"%s\"\n" +
-                        "            }",
-                sig,
-                payload);
-
-        log.info("proof: {}", proof);
-
-        TonProof tonProof = gson.fromJson(proof, TonProof.class);
-
-        byte[] message = TonConnect.createMessageForSigning(tonProof, addressStr);
-
-        // 2. Frontend signs in to wallet using TonProof and receives back a signed TonProof. Basically user signs the payload with his private key.
-
-        byte[] signature = Utils.signData(keyPair.getPublicKey(), secretKey, message);
-        log.info("signature: {}", Utils.bytesToHex(signature));
-
-        // update TonProof by adding a signature
-        tonProof.setSignature(Utils.bytesToBase64SafeUrl(signature));
-
-        log.info("proof (updated): {}", tonProof);
-
-        // 3. Frontend sends signed TonProof to a backend for verification.
-        // when a smart-contract does not have get_public_key method, you can calculate public key from its state init.
-        StateInit stateInit = StateInit.builder()
-                .code(CellBuilder.beginCell().fromBocBase64(rawAccountState.getCode()).endCell())
-                .data(CellBuilder.beginCell().fromBocBase64(rawAccountState.getData()).endCell())
-                .build();
-
-        log.info("wallet code bocHex: {}", CellBuilder.beginCell().fromBocBase64(rawAccountState.getCode()).endCell().toHex());
-        log.info("wallet version {}", WalletCodes.getKeyByValue(CellBuilder.beginCell().fromBocBase64(rawAccountState.getCode()).endCell().toHex()));
-
-        BigInteger publicKeyRemote = tonlib.getPublicKey(address);
-        // OR handover stateInit to calculate pubkey from contract's data
-
-        String accountString = String.format("{\n" +
-                        "        \"address\": \"%s\", \n" +
-                        "        \"chain\": \"-239\", \n" +
-                        "        \"walletStateInit\": \"%s\", \n" + // either this
-                        "        \"publicKey\": \"%s\"\n" +         // or this
-                        "    }",
-                address.toRaw(),
-                stateInit.toCell().toBase64(),
-                publicKeyRemote.toString(16));
-
-        log.info("accountString: {}", accountString);
-
-        WalletAccount account = gson.fromJson(accountString, WalletAccount.class);
-
-        log.info("account:{}", account);
-
-        assertThat(TonConnect.checkProof(tonProof, account)).isTrue();
-    }
-
-    @Test
-    public void testTonConnectExample() throws Exception {
-
-        String addressStr = "0:2d29bfa071c8c62fa3398b661a842e60f04cb8a915fb3e749ef7c6c41343e16c";
-
-        //backend prepares
-        TonProof tonProof = TonProof.builder()
-                .timestamp(1722999580)
-                .domain(Domain.builder()
-                        .value("xxx.xxx.com")
-                        .lengthBytes(16)
-                        .build())
-                .payload("doc-example-<BACKEND_AUTH_ID>")
-                .build();
-
-        // wallet signs
-        byte[] secretKey = Utils.hexToSignedBytes("F182111193F30D79D517F2339A1BA7C25FDF6C52142F0F2C1D960A1F1D65E1E4");
-        TweetNaclFast.Signature.KeyPair keyPair = TweetNaclFast.Signature.keyPair_fromSeed(secretKey);
-        byte[] message = TonConnect.createMessageForSigning(tonProof, addressStr);
-        byte[] signature = Utils.signData(keyPair.getPublicKey(), secretKey, message);
-        log.info("signature: {}", Utils.bytesToHex(signature));
-
-        // update TonProof by adding a signature
-        tonProof.setSignature(Utils.bytesToBase64SafeUrl(signature));
-
-        //backend verifies
-        WalletAccount walletAccount = WalletAccount.builder()
-                .chain(-239)
-                .address(addressStr)
-                .publicKey("82a0b2543d06fec0aac952e9ec738be56ab1b6027fc0c1aa817ae14b4d1ed2fb")
-                .build();
-
-        assertThat(TonConnect.checkProof(tonProof, walletAccount)).isTrue();
+// 调用合约的 allowance 函数
+        BigInteger amoun3t = erc20Contract.allowance("0xb4e32492E9725c3215F1662Cf28Db1862ed1EE84", "0x552115849813d334C58f2757037F68E2963C4c5e");
     }
 
 }
