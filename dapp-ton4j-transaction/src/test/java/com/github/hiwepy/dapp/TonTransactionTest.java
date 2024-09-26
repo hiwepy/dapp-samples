@@ -1,32 +1,53 @@
 package com.github.hiwepy.dapp;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.ton.java.address.Address;
 import org.ton.java.tonlib.Tonlib;
 import org.ton.java.tonlib.types.*;
 import org.ton.java.utils.Utils;
 
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * https://github.com/neodix42/ton4j/blob/main/tonlib/README.md
+ */
 @Slf4j
 public class TonTransactionTest {
 
 
-    private static final byte[] MY_TESTNET_VALIDATOR_ADDR = null ;
+    Tonlib tonlib;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+
+        URL tonlibjson = TonAddressWithFiftTest.class.getResource("/tonlibjson.dll");
+        File tonlibjsonFile = Paths.get(tonlibjson.toURI()).toFile();
+        String pathToTonlibSharedLib = tonlibjsonFile.getAbsolutePath();
+
+        URL testnetGlobalConfig = TonAddressWithFiftTest.class.getResource("/testnet-global.config.json");
+        File testnetGlobalConfigFile = Paths.get(testnetGlobalConfig.toURI()).toFile();
+        String pathToGlobalConfig = testnetGlobalConfigFile.getAbsolutePath();
+
+        tonlib = Tonlib.builder()
+                .pathToTonlibSharedLib(pathToTonlibSharedLib)
+                .pathToGlobalConfig(pathToGlobalConfig)
+                .verbosityLevel(VerbosityLevel.FATAL)
+                .testnet(true)
+                .build();
+    }
+
 
     /**
      * Get all block transactions
      */
     @Test
-    public void testTonConnect() throws Exception {
-        Tonlib tonlib = Tonlib.builder()
-                .pathToTonlibSharedLib("/mnt/tonlibjson.so")
-                .pathToGlobalConfig("/mnt/testnet-global.config.json")
-                .verbosityLevel(VerbosityLevel.FATAL)
-                .testnet(true)
-                .build();
+    public void testGetAllBlockTransactionsFromTon() throws Exception {
 
         //lookupBlock
         BlockIdExt fullblock = tonlib.lookupBlock(444699, -1, -9223372036854775808L, 0, 0);
@@ -36,11 +57,12 @@ public class TonTransactionTest {
         for(Map.Entry<String, RawTransactions> entry: txs.entrySet()){
             for(RawTransaction tx: ((RawTransactions)entry.getValue()).getTransactions()){
                 if(Objects.nonNull(tx.getIn_msg()) && (!tx.getIn_msg().getSource().getAccount_address().equals(""))){
-                    log.info("{} <<<<< {} : {} ", tx.getIn_msg().getSource().getAccount_address(), tx.getIn_msg().getDestination().getAccount_address(),tx.getIn_msg().getValueToncoins(9));
+                    RawMessage msg = tx.getIn_msg();
+                    log.info("{}, {} <<<<< {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
                 }
-                if(Objects.nonNull(tx.getOut_msgs()){
+                if(Objects.nonNull(tx.getOut_msgs())){
                     for(RawMessage msg:tx.getOut_msgs()){
-                        log.info("{} >>>>> {} : {} ",msg.getSource().getAccount_address(),msg.getDestination().getAccount_address(),msg.getValue());
+                        log.info("{}, {} >>>>> {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
                     }
                 }
             }
@@ -53,23 +75,17 @@ public class TonTransactionTest {
      * @throws Exception
      */
     @Test
-    public void testTonConnectExample() throws Exception {
+    public void testGeTransactionsByAddressFromTon() throws Exception {
 
-        Tonlib tonlib = Tonlib.builder()
-                .pathToTonlibSharedLib("/mnt/tonlibjson.so")
-                .pathToGlobalConfig("/mnt/testnet-global.config.json")
-                .verbosityLevel(VerbosityLevel.FATAL)
-                .testnet(true)
-                .build();
-
-        Address address = Address.of(MY_TESTNET_VALIDATOR_ADDR);
+        Address address = Address.of("EQDkZIvi6fkgNVxLOgw5hzquGhxhUvhvJ4B836p-NQ-iLKCv");
         log.info("address: " + address.toString(true));
         RawTransactions rawTransactions = tonlib.getRawTransactions(address.toString(false),null,null);
         log.info("total txs: {}", rawTransactions.getTransactions().size());
 
         for(RawTransaction tx:rawTransactions.getTransactions()) {
             if (Objects.nonNull(tx.getIn_msg()) && (!tx.getIn_msg().getSource().getAccount_address().equals(""))) {
-                log.info("{}, {} <<<<< {} : {} ", Utils.toUTC(tx.getUtime()), tx.getIn_msg().getSource().getAccount_address(), tx.getIn_msg().getDestination().getAccount_address(), tx.getIn_msg().getValueToncoins(9));
+                RawMessage msg = tx.getIn_msg();
+                log.info("{}, {} <<<<< {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
             }
             if (Objects.nonNull(tx.getOut_msgs())) {
                 for (RawMessage msg : tx.getOut_msgs()) {

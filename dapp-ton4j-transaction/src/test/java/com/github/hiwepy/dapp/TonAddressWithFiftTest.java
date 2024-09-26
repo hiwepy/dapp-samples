@@ -19,7 +19,7 @@ public class TonAddressWithFiftTest {
     @Test
     public void testAddressWithFift() throws URISyntaxException {
 
-        URL resource = TonAddressWithFiftTest.class.getResource("test-address.fif");
+        URL resource = TonAddressWithFiftTest.class.getResource("/test-address.fif");
         File fiftFile = Paths.get(resource.toURI()).toFile();
         String absolutePath = fiftFile.getAbsolutePath();
 
