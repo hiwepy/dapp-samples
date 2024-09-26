@@ -12,7 +12,7 @@ public class RouterFunctionConfig {
     @Bean
     RouterFunction<ServerResponse> routes() {
         return RouterFunctions.route()
-                .GET("/generate", req ->
+                /*.GET("/generate", req ->
                         ServerResponse.ok().body(
                                 chatClient.call(req.param("message")
                                         .orElse("tell me a joke"))))
@@ -24,7 +24,7 @@ public class RouterFunctionConfig {
                 .GET("/chat", req -> {
                     Prompt prompt = new Prompt(new UserMessage(req.param("message").orElse("Tell me a joke")));
                     return ServerResponse.ok().body(chatClient.stream(prompt));
-                })
+                })*/
                 .build();
     }
 

@@ -12,6 +12,6 @@ public interface ChainDailySignService {
      * @param req
      * @return
      */
-    Map<String, String> dailySignClaim(ChainDailySignClaimReq req);
+    Map<String, String> dailySignClaim(String appId, ChainDailySignClaimReq req);
 
 }

@@ -54,7 +54,7 @@ public class TonChainController {
     @PostMapping("/daily-sign-claim")
     public ApiRestResponse<Map<String, String>> dailySignClaim(@RequestHeader(XHeaders.X_APP_ID) String appId,
                                                                @RequestBody @Validated ChainDailySignClaimReq req) {
-        Map<String, String> result = chainDailySignService.dailySignClaim(req);
+        Map<String, String> result = chainDailySignService.dailySignClaim(appId, req);
         return ApiRestResponse.success(result);
     }
 

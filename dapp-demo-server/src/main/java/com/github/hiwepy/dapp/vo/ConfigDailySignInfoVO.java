@@ -4,7 +4,6 @@ package com.github.hiwepy.dapp.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.hiwepy.dapp.entity.ConfigChainDailySign;
-import io.server.domain.ton.ConfigActivityDailySign;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,17 +13,16 @@ import lombok.Data;
 @Builder(builderClassName = "Builder", toBuilder = true)
 public class ConfigDailySignInfoVO {
 
-    @JsonProperty(value = "days")
-    private Integer days;
+    @JsonProperty(value = "day")
+    private Integer day;
 
     @JsonProperty(value = "reward")
     private String reward;
 
-
     public static ConfigDailySignInfoVO buildConfigDailySignInfoResp(ConfigChainDailySign dailySign) {
         return ConfigDailySignInfoVO.builder()
-                .days(dailySign.getDays())
-                .reward(dailySign.getRewardAmount().stripTrailingZeros().toPlainString())
+                .day(dailySign.getDay())
+                .reward(dailySign.getReward().stripTrailingZeros().toPlainString())
                 .build();
     }
 

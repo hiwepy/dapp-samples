@@ -65,11 +65,11 @@ public class ChainDailySignLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static ChainDailySignLog buildChainDailySignLog(Long userId, Long userClientId, String address, String hashAddress) {
+    public static ChainDailySignLog buildChainDailySignLog(Long userId, String userClientId, String address, String hashAddress) {
         long now = Instant.now().toEpochMilli();
         return ChainDailySignLog.builder()
                 .userId(userId)
-                .userClientId(String.valueOf(userClientId))
+                .userClientId(userClientId)
                 .address(address)
                 .hashAddress(hashAddress)
                 .signInAt(now)

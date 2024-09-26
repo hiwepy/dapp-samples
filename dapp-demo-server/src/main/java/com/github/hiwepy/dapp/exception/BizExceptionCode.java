@@ -31,6 +31,9 @@ public enum BizExceptionCode implements CustomApiCode {
 	PARAM_NOT_EXISTS("param.not.exists", 9995, "", ""),
 	LOGIN_FAILED("login.failed", 10010, "Login Failed", "登录失败"),
 	USER_NOT_FOUND("user.not.found", 10011, "User Not Found", "用户不存在"),
+	SIGN_CLAIM_FAILED("sign.claim.failed", 10011, "Sign Claim Failed", "签到失败"),
+
+
 	;
 
 	/**

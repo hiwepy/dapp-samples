@@ -32,6 +32,22 @@
             <groupId>com.github.hiwepy</groupId>
             <artifactId>hitool-core</artifactId>
         </dependency>
+        <!-- For Ton4j : https://github.com/neodix42/ton4j -->
+        <dependency>
+            <groupId>io.github.neodix42</groupId>
+            <artifactId>smartcontract</artifactId>
+            <version>${ton4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.neodix42</groupId>
+            <artifactId>tonlib</artifactId>
+            <version>${ton4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.neodix42</groupId>
+            <artifactId>tonconnect</artifactId>
+            <version>${ton4j.version}</version>
+        </dependency>
         <!-- For Web3j : https://mvnrepository.com/artifact/org.web3j -->
         <dependency>
             <groupId>org.web3j</groupId>

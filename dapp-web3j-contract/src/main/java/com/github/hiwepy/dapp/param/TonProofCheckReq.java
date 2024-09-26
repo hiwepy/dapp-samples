@@ -1,4 +1,4 @@
-package com.github.hiwepy.dapp.vo;
+package com.github.hiwepy.dapp.param;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
