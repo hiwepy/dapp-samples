@@ -35,7 +35,7 @@
         <swagger3.version>2.1.4</swagger3.version>
         <testcontainers.version>1.20.1</testcontainers.version>
         <ton4j.version>0.6.0</ton4j.version>
-        <web3j.version>5.0.0</web3j.version>
+        <web3j.version>4.12.2</web3j.version>
     </properties>
 
     <modules>
@@ -73,6 +73,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.hiwepy</groupId>
