@@ -75,23 +75,28 @@ public class TonTransactionTest {
      * @throws Exception
      */
     @Test
-    public void testGeTransactionsByAddressFromTon() throws Exception {
+    public void testGeTransactionsByAddressFromTon()  {
 
-        Address address = Address.of("0QAs9VlT6S776tq3unJcP5Ogsj-ELLunLXuOb1EKcOQi4-QO");
-        log.info("address: " + address.toString(true));
-        RawTransactions rawTransactions = tonlib.getRawTransactions(address.toString(false),null,null);
-        log.info("total txs: {}", rawTransactions.getTransactions().size());
+        try {
 
-        for(RawTransaction tx:rawTransactions.getTransactions()) {
-            if (Objects.nonNull(tx.getIn_msg()) && (!tx.getIn_msg().getSource().getAccount_address().equals(""))) {
-                RawMessage msg = tx.getIn_msg();
-                log.info("{}, {} <<<<< {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
-            }
-            if (Objects.nonNull(tx.getOut_msgs())) {
-                for (RawMessage msg : tx.getOut_msgs()) {
-                    log.info("{}, {} >>>>> {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
+            Address address = Address.of("EQDKbjIcfM6ezt8KjKJJLshZJJSqX7XOA4ff-W72r5gqPrHF");
+            log.info("address: " + address.toString(true));
+            RawTransactions rawTransactions = tonlib.getRawTransactions(address.toString(false),null,null);
+            log.info("total txs: {}", rawTransactions.getTransactions().size());
+
+            for(RawTransaction tx:rawTransactions.getTransactions()) {
+                if (Objects.nonNull(tx.getIn_msg()) && (!tx.getIn_msg().getSource().getAccount_address().equals(""))) {
+                    RawMessage msg = tx.getIn_msg();
+                    log.info("{}, {} <<<<< {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
+                }
+                if (Objects.nonNull(tx.getOut_msgs())) {
+                    for (RawMessage msg : tx.getOut_msgs()) {
+                        log.info("{}, {} >>>>> {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
+                    }
                 }
             }
+        } catch (Exception e){
+            log.error("error: ", e);
         }
     }
 

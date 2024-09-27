@@ -104,11 +104,11 @@
             <version>1.0.4</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.github.yuyenews/Magician-web3 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.yuyenews</groupId>
             <artifactId>Magician-web3</artifactId>
             <version>1.0.0</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.github.yuyenews</groupId>
             <artifactId>Magician-Scanning</artifactId>
