@@ -40,6 +40,11 @@ public class ChainDailySignUser implements Serializable {
     private Long userId;
 
     /**
+     * 累计天数
+     */
+    private Integer seriesDays;
+
+    /**
      * 持续天数
      */
     private Integer durationDays;
@@ -64,11 +69,12 @@ public class ChainDailySignUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static ChainDailySignUser buildChainDailySignUserSave(Long userId, int durationDays) {
+    public static ChainDailySignUser buildChainDailySignUserSave(Long userId, Integer seriesDays, Integer durationDays) {
         long now = Instant.now().toEpochMilli();
         return ChainDailySignUser.builder()
                 .version(1)
                 .userId(userId)
+                .seriesDays(seriesDays)
                 .durationDays(durationDays)
                 .lastSignInAt(now)
                 .createdAt(now)
@@ -76,15 +82,17 @@ public class ChainDailySignUser implements Serializable {
                 .build();
     }
 
-    public static ChainDailySignUser buildChainDailySignUserUpdate(ChainDailySignUser already, int durationDays) {
+    public static ChainDailySignUser buildChainDailySignUserUpdate(ChainDailySignUser already, Integer seriesDays,  Integer durationDays) {
         long now = Instant.now().toEpochMilli();
         return ChainDailySignUser.builder()
                 .id(already.getId())
                 .oldVersion((already.getVersion()))
                 .version(already.getVersion())
+                .seriesDays(seriesDays)
                 .durationDays(durationDays)
                 .lastSignInAt(now)
                 .updatedAt(now)
                 .build();
     }
+
 }

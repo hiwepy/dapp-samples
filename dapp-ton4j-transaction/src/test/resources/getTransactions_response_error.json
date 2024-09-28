@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "error": "LITE_SERVER_UNKNOWN: cannot locate transaction in block with specified logical time",
+  "code": 500
+}

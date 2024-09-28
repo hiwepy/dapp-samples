@@ -49,6 +49,12 @@ public class DateUtils {
         return midnightInUTC9.toInstant().toEpochMilli();
     }
 
+    public static long utcConvertByZoneId(Long timestamp, TimezoneEnum timezoneEnum) {
+        Instant instant = Instant.ofEpochMilli(timestamp);
+        ZonedDateTime zonedDateTime = instant.atZone(timezoneEnum.getZoneId());
+        // 将ZonedDateTime转换为时间戳
+        return zonedDateTime.toInstant().toEpochMilli();
+    }
 
     public static long utcConvertUnitDayAndHourByZoneId(Integer timeClock, TimezoneEnum timezoneEnum) {
         LocalDate today = LocalDate.now(timezoneEnum.getZoneId());

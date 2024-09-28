@@ -49,6 +49,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
         <!-- For Commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -75,6 +76,17 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
+        </dependency>
+        <!-- For Okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>${okhttp.version}</version>
         </dependency>
         <!-- For Spring Web -->
         <dependency>

@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "@type": "raw.transaction",
+      "address": {
+        "@type": "accountAddress",
+        "account_address": "EQDKbjIcfM6ezt8KjKJJLshZJJSqX7XOA4ff-W72r5gqPrHF"
+      },
+      "utime": 1726010034,
+      "data": "te6cckECCgEAAkYAA7V8puMhx8zp7O3wqMokkuyFkklKpftc4Dh9/5bvavmCo+AAAsod2HeYH+vACfhxzYecwgfmkhfZOGAPoK8uhUeFUG/EuHOxwJQgAALKHaIblBZuDSsgADRj7cFoAQIDAgHgBAUAgnL2Hti98Uw7UcNeP78kFEp/2QJwaBGJxDu+rnW+4KkGsDRZSRTqI+guvuyibENck9A65KG+f9oDt4L0Qx6j/aDJAg8MTgYYoYYEQAgJAeGIAZTcZDj5nT2dvhUZRJJdkLJJKVS/a5wHD7/y3e1fMFR8AOc85hzrPSlQMPWWYDq4k5cyhxHXBRGhDTdsag6Xm7voZbeX3uCEaL8Fso7c8wSPUWpH+yWMT4FYc72ibvtW2DFNTRi7Nwae2AAAFvgAHAYBAd8HAGZCAETY+07B7nqiT7ExznTYywiysYlwx7/T6dDt/aMNlLuEmHoSAAAAAAAAAAAAAAAAAAAAr0gBlNxkOPmdPZ2+FRlEkl2QskkpVL9rnAcPv/Ld7V8wVH0AImx9p2D3PVEn2JjnOmxlhFlYxLhj3+n06Hb+0YbKXcJMPQkABggjWgAAWUO7DvMEzcGlZEAAnUGdgxOIAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAb8mDDUBMCCNMAAAAAAACAAAAAAADWV7Ug1ZoK+64nL8R9sZLRWKVvjYQ5ZtmBMeWh4SQOPRAUBXMZ3GZQQ==",
+      "transaction_id": {
+        "@type": "internal.transactionId",
+        "lt": "49073718000001",
+        "hash": "bUs9hyratEcS0oAHPklnWS3Lp2l0xeljc/oLDZBmYGs="
+      },
+      "fee": "2326456",
+      "storage_fee": "56",
+      "other_fee": "2326400",
+      "in_msg": {
+        "@type": "raw.message",
+        "source": "",
+        "destination": "EQDKbjIcfM6ezt8KjKJJLshZJJSqX7XOA4ff-W72r5gqPrHF",
+        "value": "0",
+        "fwd_fee": "0",
+        "ihr_fee": "0",
+        "created_lt": "0",
+        "body_hash": "1gU/nKVUHl4kB/YTM6FAw5PaBEAlXFXTGN1BEf85/I4=",
+        "msg_data": {
+          "@type": "msg.dataRaw",
+          "body": "te6cckEBAgEAhgABnBznnMOdZ6UqBh6yzAdXEnLmUOI64KI0IabtjUHS83d9DLby+9wQjRfgtlHbnmCR6i1I/2SxifArDne0Td9q2wYpqaMXZuDT2wAAAt8AAwEAZkIARNj7TsHueqJPsTHOdNjLCLKxiXDHv9Pp0O39ow2Uu4SYehIAAAAAAAAAAAAAAAAAAFSw29I=",
+          "init_state": ""
+        },
+        "message": "HOecw51npSoGHrLMB1cScuZQ4jrgojQhpu2NQdLzd30MtvL73BCNF+C2UdueYJHqLUj/ZLGJ8CsO\nd7RN32rbBimpoxdm4NPbAAAC3wAD\n"
+      },
+      "out_msgs": [
+        {
+          "@type": "raw.message",
+          "source": "EQDKbjIcfM6ezt8KjKJJLshZJJSqX7XOA4ff-W72r5gqPrHF",
+          "destination": "EQCJsfadg9z1RJ9iY5zpsZYRZWMS4Y9_p9Oh2_tGGyl3CXdZ",
+          "value": "1000000",
+          "fwd_fee": "266669",
+          "ihr_fee": "0",
+          "created_lt": "49073718000002",
+          "body_hash": "lqKW0iTyhcZ77pPDD4owkVfw2qNdxbh+QQt4YwoJz8c=",
+          "msg_data": {
+            "@type": "msg.dataRaw",
+            "body": "te6cckEBAQEAAgAAAEysuc0=",
+            "init_state": ""
+          },
+          "message": ""
+        }
+      ]
+    }
+  ]
+}
