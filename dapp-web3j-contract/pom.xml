@@ -246,7 +246,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
-                    <mainClass>com.github.hiwepy.dapp.DAppTonApplication</mainClass>
+                    <mainClass>com.github.hiwepy.dapp.DAppApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

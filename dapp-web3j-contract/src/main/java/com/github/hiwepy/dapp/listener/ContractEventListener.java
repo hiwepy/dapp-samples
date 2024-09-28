@@ -23,7 +23,6 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 @Slf4j
 @Component
 public class ContractEventListener {
@@ -40,8 +39,8 @@ public class ContractEventListener {
 
     @Autowired
     public ContractEventListener(
-            @Value("${contract.address}") String contractAddress,
-            @Value("${contract.websocket-url}") String ethereumRpcUrl
+        @Value("${contract.address}") String contractAddress,
+        @Value("${contract.websocket-url}") String ethereumRpcUrl
     ) {
         this.contractAddress = contractAddress;
         this.ethereumRpcUrl = ethereumRpcUrl;
@@ -391,3 +390,4 @@ public class ContractEventListener {
         }
     }
 }
+

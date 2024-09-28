@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DAppTonApplication {
+public class DAppApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DAppTonApplication.class, args);
+        SpringApplication.run(DAppApplication.class, args);
     }
 
 }
