@@ -45,6 +45,7 @@
         <module>dapp-ton4j-contract</module>
         <module>dapp-ton4j-transaction</module>
         <module>dapp-web3j-contract</module>
+        <module>dapp-web3j-transaction</module>
     </modules>
 <!--
 	<repositories>
