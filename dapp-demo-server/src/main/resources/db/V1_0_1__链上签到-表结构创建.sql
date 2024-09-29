@@ -46,3 +46,19 @@ CREATE TABLE `t_chain_daily_sign_log` (
     PRIMARY KEY (`id`) USING BTREE,
     KEY `idx_user` (`user_id`) USING BTREE COMMENT '链上签到记录索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='链上每日用户签到记录表';
+
+
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(1, 1, 1, 100.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(2, 1, 2, 200.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(3, 1, 3, 400.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(4, 1, 4, 700.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(5, 1, 5, 900.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(6, 1, 6, 1000.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(7, 1, 7, 1200.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(8, 1, 8, 1500.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(9, 1, 9, 2000.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(10, 1, 10, 3000.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(11, 1, 11, 4000.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(12, 1, 12, 5000.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(13, 1, 13, 10000.0000, 1721446166000, 1721446166000);
+INSERT INTO t_config_chain_daily_sign (id, version, `day`, reward, created_at, updated_at) VALUES(14, 1, 14, 20000.0000, 1721446166000, 1721446166000);
