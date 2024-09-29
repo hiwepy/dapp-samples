@@ -38,7 +38,7 @@ CREATE TABLE `t_chain_daily_sign_log` (
     `user_client_id` varchar(128) NOT NULL COMMENT '客户端id',
     `address` varchar(50) NOT NULL COMMENT '钱包地址',
     `hash_address` varchar(50) NOT NULL COMMENT '交易hash地址',
-    `sign_in_at` datetime NOT NULL COMMENT '签到时间',
+    `sign_in_at` bigint NOT NULL DEFAULT '0' COMMENT '签到时间',
     `reward_amount` decimal(16,4) NOT NULL DEFAULT '0.0000' COMMENT '签到奖励',
     `reward_content` text NULL COMMENT '签到奖励内容',
     `created_at` bigint NOT NULL DEFAULT '0' COMMENT '创建时间',
