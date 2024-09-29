@@ -1,29 +1,22 @@
-package com.github.hiwepy.dapp.util;
 
+package com.github.hiwepy.dapp.util;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.hiwepy.api.exception.BizIOException;
 import com.github.hiwepy.api.util.JacksonUtils;
 import com.github.hiwepy.api.util.OkHttpClientCreater;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.apache.commons.lang3.StringUtils;
-import org.ton.java.address.Address;
-import org.ton.java.tonlib.Tonlib;
-import org.ton.java.tonlib.types.RawMessage;
-import org.ton.java.tonlib.types.RawTransaction;
-import org.ton.java.tonlib.types.RawTransactions;
-import org.ton.java.tonlib.types.VerbosityLevel;
-import org.ton.java.utils.Utils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 @Slf4j
-public class TonTransactionUtil {
+public class TonHttpApiUtil {
 
     protected final static String APPLICATION_JSON_VALUE = "application/json";
     protected static OkHttpClient httpClient = OkHttpClientCreater.createOKHttpClient(HttpLoggingInterceptor.Level.BODY);
@@ -36,44 +29,7 @@ public class TonTransactionUtil {
      * toncenter测试网的API方法
      */
     protected static String TON_HTTP_API_TEST_HOST = "https://testnet.toncenter.com";
-    protected static String TON_API_KEY = "••••••";
-
-
-    /**
-     * 检查交易是否由指定地址发起
-     * @param hashAddress 交易hash地址
-     * @param address 发起交易的钱包地址
-     * @return true: 交易由指定地址发起；false: 交易不是由指定地址发起
-     */
-    public static boolean checkTransaction(String hashAddress, String address) {
-
-        // TODO 待调试通
-
-        Tonlib tonlib = Tonlib.builder()
-                .pathToTonlibSharedLib("/mnt/tonlibjson.so")
-                .pathToGlobalConfig("/mnt/testnet-global.config.json")
-                .verbosityLevel(VerbosityLevel.FATAL)
-                .testnet(true)
-                .build();
-
-        Address addressObj = Address.of(hashAddress.getBytes(StandardCharsets.UTF_8));
-        log.info("address: " + addressObj.toString(true));
-        RawTransactions rawTransactions = tonlib.getRawTransactions(addressObj.toString(false),null,null);
-        log.info("total txs: {}", rawTransactions.getTransactions().size());
-
-        for(RawTransaction tx:rawTransactions.getTransactions()) {
-            if (Objects.nonNull(tx.getIn_msg()) && (!tx.getIn_msg().getSource().getAccount_address().equals(address))) {
-                log.info("{}, {} <<<<< {} : {} ", Utils.toUTC(tx.getUtime()), tx.getIn_msg().getSource().getAccount_address(), tx.getIn_msg().getDestination().getAccount_address(), tx.getIn_msg().getValue());
-                return false;
-            }
-            if (Objects.nonNull(tx.getOut_msgs())) {
-                for (RawMessage msg : tx.getOut_msgs()) {
-                    log.info("{}, {} >>>>> {} : {} ", Utils.toUTC(tx.getUtime()), msg.getSource().getAccount_address(), msg.getDestination().getAccount_address(), msg.getValue());
-                }
-            }
-        }
-        return true;
-    }
+    protected static String TON_API_KEY = "3f61b66b72d87d1e0c17572cdfd50d9e730cd2467bdaf5e8471b58dc70de256b";
 
     /**
      * 通过 TON HTTP API 检查交易是否由指定地址发起
@@ -86,39 +42,53 @@ public class TonTransactionUtil {
     public static boolean checkByTonHttpApi(String address, long thisDayStartAt) {
         long startTime = System.currentTimeMillis();
         try {
-            // 1、创建RequestBody对象
-            MediaType mediaType = MediaType.parse(APPLICATION_JSON_VALUE);
-            RequestBody body = RequestBody.create(mediaType, "");
-            // 2、创建HttpUrl对象
-            HttpUrl httpUrl = new HttpUrl.Builder()
-                    .scheme("https")
-                    .host(TON_HTTP_API_TEST_HOST)
-                    .addPathSegment("/api/v2/getTransactions")
-                    .addQueryParameter("address", address)
-                    .addQueryParameter("limit", "1")
-                    .addQueryParameter("to_lt", "0")
-                    .addQueryParameter("archival", "false")
-                    .build();
-            // 3、创建Request.Builder对象
-            Request request = new Request.Builder()
-                    .url(httpUrl)
-                    .method("GET", body)
-                    .addHeader("Accept", "application/json")
-                    .addHeader("X-API-Key", TON_API_KEY)
-                    .build();
-            // 4、创建Call对象
-            Response response = httpClient.newCall(request).execute();
-            if (response.isSuccessful()) {
-                log.info("OkHttp3 >> Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
-                String responseBody = response.body().string();
-                return checkResponse(responseBody, address, thisDayStartAt);
-            } else {
-                log.error("OkHttp3 >> Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
-                return Boolean.FALSE;
-            }
-        } catch (IOException e) {
+            String responseBody = getTransactions(address);
+            return checkResponse(responseBody, address, thisDayStartAt);
+        } catch (Exception e) {
             log.error("OkHttp3 Request Error : {}, use time : {}", e.getMessage(), System.currentTimeMillis() - startTime);
             return Boolean.FALSE;
+        }
+    }
+
+
+    /**
+     * 通过 TON HTTP API 检查交易是否由指定地址发起
+     * 生产环境：https://toncenter.com/api/v2/#/transactions/get_transactions_getTransactions_get
+     * 测试环境：https://testnet.toncenter.com/api/v2/#/transactions/get_transactions_getTransactions_get
+     * @param address (Required) Identifier of target TON account in any form.
+     * @param hash 今日开始时间 utc
+     * @return true: 交易由指定地址发起；false: 交易不是由指定地址发起
+     */
+    public static String getTransactions(String address) throws IOException {
+        long startTime = System.currentTimeMillis();
+        // 1、创建RequestBody对象
+        MediaType mediaType = MediaType.parse(APPLICATION_JSON_VALUE);
+        RequestBody body = RequestBody.create(mediaType, "");
+        // 2、创建HttpUrl对象
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("https")
+                .host(TON_HTTP_API_TEST_HOST)
+                .addPathSegment("/api/v2/getTransactions")
+                .addQueryParameter("address", address)
+                .addQueryParameter("limit", "1")
+                .addQueryParameter("to_lt", "0")
+                .addQueryParameter("archival", "false")
+                .build();
+        // 3、创建Request.Builder对象
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", body)
+                .addHeader("Accept", "application/json")
+                .addHeader("X-API-Key", TON_API_KEY)
+                .build();
+        // 4、创建Call对象
+        Response response = httpClient.newCall(request).execute();
+        if (response.isSuccessful()) {
+            log.info("OkHttp3 >> Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
+            return response.body().string();
+        } else {
+            log.error("OkHttp3 >> Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
+            throw new BizIOException(response.message());
         }
     }
 

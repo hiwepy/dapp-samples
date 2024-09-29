@@ -16,7 +16,8 @@ import com.github.hiwepy.dapp.param.ChainDailySignClaimReq;
 import com.github.hiwepy.dapp.service.ChainDailySignService;
 import com.github.hiwepy.dapp.service.ConfigChainDailySignService;
 import com.github.hiwepy.dapp.service.TonChainService;
-import com.github.hiwepy.dapp.util.TonTransactionUtil;
+import com.github.hiwepy.dapp.util.Ton4jSdkUtil;
+import com.github.hiwepy.dapp.util.TonHttpApiUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +73,7 @@ public class ChainDailySignServiceImpl implements ChainDailySignService {
         // 4、如果用户没有签到记录，说明是第一次签到
         if (Objects.isNull(chainDailySignUser)) {
             // 4.1、通过TON HTTP API 检查 Ton 指定钱包地址今日是否有交易
-            boolean checked = TonTransactionUtil.checkByTonHttpApi(req.getAddress(), thisDayStartAt);
+            boolean checked = TonHttpApiUtil.checkByTonHttpApi(req.getAddress(), thisDayStartAt);
             if (!checked) {
                 BizExceptionCode.SIGN_CLAIM_FAILED.throwException();
             }
@@ -88,7 +89,7 @@ public class ChainDailySignServiceImpl implements ChainDailySignService {
                 return Map.of("claimStatus", UserDailySignStatusEnum.CLAIMED.name());
             }
             // 5.2、如果今日没有签到，通过TON HTTP API 检查 Ton 指定钱包地址今日是否有交易
-            boolean checked = TonTransactionUtil.checkByTonHttpApi(req.getAddress(), thisDayStartAt);
+            boolean checked = TonHttpApiUtil.checkByTonHttpApi(req.getAddress(), thisDayStartAt);
             if (!checked) {
                 BizExceptionCode.SIGN_CLAIM_FAILED.throwException();
             }
