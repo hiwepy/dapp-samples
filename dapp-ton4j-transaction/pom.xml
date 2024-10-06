@@ -35,20 +35,19 @@
         <!-- For Ton4j : https://github.com/neodix42/ton4j -->
         <dependency>
             <groupId>io.github.neodix42</groupId>
-            <artifactId>smartcontract</artifactId>
-            <version>${ton4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.neodix42</groupId>
             <artifactId>tonlib</artifactId>
             <version>${ton4j.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.neodix42</groupId>
-            <artifactId>tonconnect</artifactId>
+            <artifactId>mnemonic</artifactId>
             <version>${ton4j.version}</version>
         </dependency>
-        <!--Ton4j End-->
+        <dependency>
+            <groupId>io.github.neodix42</groupId>
+            <artifactId>fift</artifactId>
+            <version>${ton4j.version}</version>
+        </dependency>
         <!-- For springdoc -->
         <dependency>
             <groupId>org.springdoc</groupId>

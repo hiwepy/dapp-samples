@@ -2,7 +2,7 @@ package com.github.hiwepy.dapp.controller;
 
 import com.github.hiwepy.api.ApiRestResponse;
 import com.github.hiwepy.api.XHeaders;
-import com.github.hiwepy.dapp.param.TonProofCheckReq;
+import com.github.hiwepy.dapp.param.TonTransactionCheckReq;
 import com.github.hiwepy.dapp.service.TonChainService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/ton/v1")
+@RequestMapping("/ton/v2")
 @Slf4j
 public class TonChainController {
 
@@ -25,17 +25,16 @@ public class TonChainController {
     }
 
     /**
-     * 在服务器端检查 ton_proof
-     * <a href="https://docs.ton.org/develop/dapps/ton-connect/sign#checking-ton_proof-on-server-side">在服务器端检查 ton_proof</a>
+     * 在服务器端检查 transaction
      * @param appId 客户端ID
      * @param req 请求参数
      * @return
      */
-    @GetMapping("/check_ton_proof")
+    @GetMapping("/check_transaction")
     public ApiRestResponse<Map> checkTonProof(@RequestHeader(XHeaders.X_APP_ID) String appId,
-                                              @RequestBody @Validated TonProofCheckReq req) {
+                                              @RequestBody @Validated TonTransactionCheckReq req) {
         try {
-            boolean checked = tonChainService.checkProof(appId, req);
+            boolean checked = tonChainService.checkTransaction(appId, req);
             if(checked){
                 return ApiRestResponse.success(Map.of("checked", true));
             }

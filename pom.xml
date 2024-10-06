@@ -34,7 +34,7 @@
         <swagger-butler.version>1.2.0</swagger-butler.version>
         <swagger3.version>2.1.4</swagger3.version>
         <testcontainers.version>1.20.1</testcontainers.version>
-        <ton4j.version>0.6.0</ton4j.version>
+        <ton4j.version>0.7.0</ton4j.version>
         <web3j.version>4.12.2</web3j.version>
     </properties>
 

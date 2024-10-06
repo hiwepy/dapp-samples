@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
-import org.ton.java.tonconnect.TonConnect;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,8 +19,6 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 public class TonResponseTest {

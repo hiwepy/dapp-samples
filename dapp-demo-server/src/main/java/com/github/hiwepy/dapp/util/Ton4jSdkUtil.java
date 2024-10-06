@@ -1,10 +1,7 @@
 package com.github.hiwepy.dapp.util;
 
 
-import com.github.hiwepy.api.util.OkHttpClientCreater;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.ton.java.address.Address;
 import org.ton.java.tonlib.Tonlib;
 import org.ton.java.tonlib.types.RawMessage;
@@ -18,20 +15,6 @@ import java.util.Objects;
 
 @Slf4j
 public class Ton4jSdkUtil {
-
-    protected final static String APPLICATION_JSON_VALUE = "application/json";
-    protected static OkHttpClient httpClient = OkHttpClientCreater.createOKHttpClient(HttpLoggingInterceptor.Level.BODY);
-
-    /**
-     * toncenter主网的API方法
-      */
-    protected static String TON_HTTP_API_HOST = "https://toncenter.com";
-    /**
-     * toncenter测试网的API方法
-     */
-    protected static String TON_HTTP_API_TEST_HOST = "https://testnet.toncenter.com";
-    protected static String TON_API_KEY = "••••••";
-
 
     /**
      * 检查交易是否由指定地址发起
